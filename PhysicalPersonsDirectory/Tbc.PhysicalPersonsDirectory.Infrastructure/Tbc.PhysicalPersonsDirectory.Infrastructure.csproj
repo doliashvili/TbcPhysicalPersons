@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+    <Folder Include="Options\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tbc.PhysicalPersonsDirectory.Application\Tbc.PhysicalPersonsDirectory.Application.csproj" />
+    <ProjectReference Include="..\Tbc.PhysicalPersonsDirectory.Persistence\Tbc.PhysicalPersonsDirectory.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
