@@ -25,8 +25,8 @@ builder.Services.AddHealthChecks()
         name: "Database",
         timeout: TimeSpan.FromSeconds(5),
         failureStatus: HealthStatus.Unhealthy);
-
 builder.Services.AddControllers()
+    //  .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase, allowIntegerValues: false)))
     .ConfigureApiBehaviorOptions(options => options.InvalidModelStateResponseFactory = ModelStateValidatorExpression.ProcessValidationError);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -39,6 +39,31 @@ builder.Services.AddSwaggerGen(options =>
     //vizualistvis(satesto davalebistvis vpiqrob esec sakmarisia)
 });
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAllOrigins",
+            builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            });
+    });
+}
+else
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("RestrictedOrigins",
+            builder =>
+            {
+                builder.WithOrigins("https://tbc-frontend-app.com")
+                       .WithMethods("POST", "GET")
+                       .AllowAnyHeader();
+            });
+    });
+}
+
 var app = builder.Build();
 
 // Apply migrations
@@ -47,6 +72,9 @@ app.ApplyMigrations();
 // Configure the HTTP request pipeline
 app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 app.UseMiddleware<LocalizationMiddleware>();
+
+// Apply CORS policy here
+app.UseCors(builder.Environment.IsDevelopment() ? "AllowAllOrigins" : "RestrictedOrigins");
 
 app.MapHealthChecks("/health", new HealthCheckOptions
 {
