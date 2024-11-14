@@ -7,12 +7,15 @@
             try
             {
                 Console.WriteLine("A");
-                DoSomething();
+                DoSomething(); //აქ ექსეფშენს ვერ ვიჭერთ ვინაიდან აქ ბრუნდება ტასკი შესაბმისად რათქმაუნდა catch-ბლოკი
+                               //არ აღიძვრება (პასუხი A B Finish)
             }
             catch (Exception)
             {
                 Console.WriteLine("D");
             }
+
+            Console.WriteLine("finish");
 
             async Task DoSomething()
             {
@@ -30,12 +33,16 @@
             try
             {
                 Console.WriteLine("A");
-                DoSomething();
+                DoSomething(); //ამ შემთხვევაში შესრულდება delay-მდე კოდი Console.WriteLine("B");
+                               // რათქმაუნდა აქ არგვიწერია await შესაბამისად წავა და შეასრულებს შემდგომ ოპერაციას Console.WriteLine("Finish");
+                               //პასუხი(A B Finish C)
             }
             catch (Exception)
             {
                 Console.WriteLine("D");
             }
+
+            Console.WriteLine("Finish");
 
             async Task DoSomething()
             {
